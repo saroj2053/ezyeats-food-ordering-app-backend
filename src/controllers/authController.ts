@@ -38,13 +38,13 @@ const signup = async (req: Request, res: Response) => {
       email: newUser.email,
       avatar: newUser.avatar,
       createdAt: newUser.createdAt,
-      token: token,
     };
 
     res.status(201).json({
       success: true,
       message: "User registered successfully",
       user: userDto,
+      token: token,
     });
   } catch (error) {
     console.log("Error in signup controller", error);
@@ -83,13 +83,13 @@ const login = async (req: Request, res: Response) => {
       email: user.email,
       avatar: user.avatar,
       createdAt: user.createdAt,
-      token,
     };
 
     res.status(201).json({
       success: true,
       message: "User logged in successfully",
       user: userDto,
+      token: token,
     });
   } catch (error) {
     console.log("Error in login controller", error);
