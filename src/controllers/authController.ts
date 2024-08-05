@@ -63,7 +63,7 @@ const login = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid body parameters" });
     }
 
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({ email: email }).populate("address");
 
     if (!user) {
       return res.status(400).json({ message: "Invalid email or password" });
@@ -77,14 +77,8 @@ const login = async (req: Request, res: Response) => {
 
     const token = jwtSign(user._id.toString(), res);
 
-    const userDto = {
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      avatar: user.avatar,
-      createdAt: user.createdAt,
-    };
-
+    const { password: userPassword, ...restUserProps } = user.toObject();
+    const userDto = restUserProps;
     res.status(201).json({
       success: true,
       message: "User logged in successfully",
