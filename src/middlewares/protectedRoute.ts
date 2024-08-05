@@ -2,6 +2,14 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/user";
 
+declare global {
+  namespace Express {
+    interface Request {
+      userId: string;
+    }
+  }
+}
+
 const protectedRoute = async (
   req: Request,
   res: Response,
@@ -9,14 +17,10 @@ const protectedRoute = async (
 ) => {
   try {
     let token;
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer")
-    ) {
-      token = req.headers.authorization.split(" ")[1];
+    const { authorization } = req.headers;
+    if (authorization && authorization.startsWith("Bearer")) {
+      token = authorization.split(" ")[1];
     }
-
-    console.log(token);
 
     if (!token) {
       return res.status(401).json({
@@ -39,7 +43,7 @@ const protectedRoute = async (
       });
     }
 
-    (req as any).user = user;
+    req.userId = user._id.toString();
 
     next();
   } catch (error) {

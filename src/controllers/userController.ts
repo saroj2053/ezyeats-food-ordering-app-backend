@@ -4,7 +4,7 @@ import Address from "../models/address";
 
 const getUserProfile = async (req: Request, res: Response) => {
   try {
-    const userId = (req as any).user.id;
+    const userId = req.userId;
 
     const user = await User.findById(userId).lean().populate("address");
 
@@ -29,13 +29,14 @@ const updateUserProfile = async (req: Request, res: Response) => {
   // 3) otherwise create new one
   // 4) link addressId to user
   try {
-    const userId = (req as any).user.id;
     const { name, addressLine1, city, country } = req.body;
     if (!name || !addressLine1 || !city || !country) {
       return res.status(400).json({ message: "Invalid body parameters" });
     }
 
-    const userDetails = await User.findById(userId).lean().populate("address");
+    const userDetails = await User.findById(req.userId)
+      .lean()
+      .populate("address");
 
     let addressId;
 
@@ -60,7 +61,7 @@ const updateUserProfile = async (req: Request, res: Response) => {
 
     // updating the user with the new address values
     const associatedUser = await User.findByIdAndUpdate(
-      userId,
+      req.userId,
       { name, address: addressId },
       { new: true }
     )
