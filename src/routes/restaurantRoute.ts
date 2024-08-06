@@ -13,6 +13,8 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
 });
 
+router.get("/", protectedRoute, restaurantController.getRestaurant);
+
 router.post(
   "/",
   upload.single("imageFile"),
