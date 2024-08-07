@@ -5,6 +5,7 @@ import connectToDB from "./config/db";
 import authRoute from "./routes/authRoute";
 import userRoute from "./routes/userRoute";
 import restaurantRoute from "./routes/restaurantRoute";
+import restaurantFeaturesRoute from "./routes/restaurantFeaturesRoute";
 import { v2 as cloudinary } from "cloudinary";
 
 // connection to database
@@ -29,6 +30,7 @@ app.get("/health", async (req: Request, res: Response) => {
 app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
 app.use("/api/restaurant", restaurantRoute);
+app.use("/api/restaurant/features", restaurantFeaturesRoute);
 
 app.get("/", async (req: Request, res: Response) => {
   res.json({ status: "success", message: "Hello world!!" });
