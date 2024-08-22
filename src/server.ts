@@ -5,6 +5,7 @@ import connectToDB from "./config/db";
 import authRoute from "./routes/authRoute";
 import userRoute from "./routes/userRoute";
 import restaurantRoute from "./routes/restaurantRoute";
+import orderRoute from "./routes/orderRoute";
 import restaurantFeaturesRoute from "./routes/restaurantFeaturesRoute";
 import { v2 as cloudinary } from "cloudinary";
 
@@ -31,12 +32,13 @@ app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
 app.use("/api/restaurant", restaurantRoute);
 app.use("/api/restaurant/features", restaurantFeaturesRoute);
+app.use("/api/order", orderRoute);
 
 app.get("/", async (req: Request, res: Response) => {
   res.json({ status: "success", message: "Hello world!!" });
 });
 
-const PORT: number = 8000;
+const PORT: number = 5000;
 
 app.listen(PORT, () => {
   console.log(`Server started on localhost:${PORT}`);
