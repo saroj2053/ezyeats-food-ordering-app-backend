@@ -1,6 +1,22 @@
 import { Request, Response } from "express";
 import Restaurant from "../models/restaurant";
 
+const getRestaurantDetails = async (req: Request, res: Response) => {
+  try {
+    const { restaurantId } = req.params;
+    const foundRestaurant = await Restaurant.findById(restaurantId);
+
+    if (!foundRestaurant) {
+      res.status(404).json({ message: "restaurant not found" });
+    }
+
+    res.json(foundRestaurant); //when we say json, it automatically adds a status code of 200
+  } catch (error) {
+    console.log("error in getRestaurantDetails controller", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 const searchRestaurants = async (req: Request, res: Response) => {
   try {
     const city = req.params.city;
@@ -67,4 +83,4 @@ const searchRestaurants = async (req: Request, res: Response) => {
   }
 };
 
-export default { searchRestaurants };
+export default { searchRestaurants, getRestaurantDetails };

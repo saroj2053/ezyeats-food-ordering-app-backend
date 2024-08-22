@@ -11,9 +11,8 @@ const getUserProfile = async (req: Request, res: Response) => {
     if (user) {
       //destructuring user to omit password field
       const { password, ...userWithoutPassword } = user;
-      res
-        .status(200)
-        .json({ message: "User Details", user: userWithoutPassword });
+
+      res.json(userWithoutPassword);
     } else {
       res.status(404).json({ message: "User not found" });
     }
@@ -29,7 +28,10 @@ const updateUserProfile = async (req: Request, res: Response) => {
   // 3) otherwise create new one
   // 4) link addressId to user
   try {
-    const { name, addressLine1, city, country } = req.body;
+    const { name, address } = req.body;
+
+    const { addressLine1, city, country } = address || {};
+
     if (!name || !addressLine1 || !city || !country) {
       return res.status(400).json({ message: "Invalid body parameters" });
     }
